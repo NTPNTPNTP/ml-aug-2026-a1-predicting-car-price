@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Car Price Prediction</title>
+    <style>
+        :root {
+            --bg: #14171c;
+            --panel: #1c2027;
+            --panel-line: #2a2f38;
+            --text: #e8e6df;
+            --text-dim: #8b909c;
+            --amber: #e8a13a;
+            --amber-dim: #6b5427;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: var(--bg);
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(232, 161, 58, 0.06), transparent 60%);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dash {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--amber);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .intro {
+            color: var(--text-dim);
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin: 0 0 32px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--panel-line);
+        }
+
+        .intro strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--panel-line);
+            border-radius: 14px;
+            padding: 28px;
+        }
+
+        .field {
+            margin-bottom: 22px;
+        }
+
+        .field:last-of-type {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        label .unit {
+            font-size: 13px;
+            font-weight: 400;
+            text-transform: none;
+            color: var(--amber-dim);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 20px;
+            font-family: 'Consolas', 'SF Mono', monospace;
+            background: var(--bg);
+            border: 1px solid var(--panel-line);
+            border-radius: 8px;
+            color: var(--text);
+            transition: border-color 0.15s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--amber);
+        }
+
+        input::placeholder {
+            color: #4a4f59;
+        }
+
+        .skip-note {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 6px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 28px;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: var(--amber);
+            color: #1c1500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: filter 0.15s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            filter: brightness(1.08);
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        button:disabled {
+            background: var(--amber-dim);
+            color: #8a7548;
+            cursor: not-allowed;
+        }
+
+        .readout {
+            margin-top: 24px;
+            padding: 24px;
+            background: var(--bg);
+            border: 1px solid var(--panel-line);
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .readout.show {
+            display: block;
+        }
+
+        .readout-label {
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .readout-value {
+            font-family: 'Consolas', 'SF Mono', monospace;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--amber);
+            letter-spacing: 0.02em;
+            text-shadow: 0 0 20px rgba(232, 161, 58, 0.25);
+        }
+
+        .readout-value::before {
+            content: "฿";
+            font-size: 22px;
+            vertical-align: middle;
+            margin-right: 4px;
+            opacity: 0.7;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dash">
+        <div class="eyebrow">Resale Estimator</div>
+        <h1>Predicting car price</h1>
+        <p class="intro">
+            Enter the car's <strong>manufacturing year</strong> and <strong>maximum power (bhp)</strong>
+            to get an estimated resale price. Don't know a value? Leave it blank —
+            it'll be filled in using a typical value from the training data.
+        </p>
+
+        <div class="panel">
+            <form id="predictionForm">
+                <div class="field">
+                    <label for="year">Year <span class="unit">e.g. 2015</span></label>
+                    <input type="number" id="year" placeholder="Leave blank to skip">
+                </div>
+                <div class="field">
+                    <label for="max_power">Max power <span class="unit">bhp</span></label>
+                    <input type="number" step="0.1" id="max_power" placeholder="Leave blank to skip">
+                </div>
+                <button type="submit" id="submitBtn">Predict car price</button>
+            </form>
+
+            <div class="readout" id="readout">
+                <div class="readout-label">Estimated price</div>
+                <div class="readout-value" id="result">—</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('predictionForm');
+        const btn = document.getElementById('submitBtn');
+        const readout = document.getElementById('readout');
+        const resultEl = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const yearVal = document.getElementById('year').value;
+            const powerVal = document.getElementById('max_power').value;
+
+            const payload = {
+                year: yearVal === '' ? null : parseInt(yearVal),
+                max_power: powerVal === '' ? null : parseFloat(powerVal)
+            };
+
+            btn.disabled = true;
+            btn.textContent = 'Calculating…';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                resultEl.textContent = result.predicted_price.toLocaleString();
+                readout.classList.add('show');
+            } catch (err) {
+                resultEl.textContent = 'Error — try again';
+                readout.classList.add('show');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Predict car price';
+            }
+        });
+    </script>
+</body>
+
+</html>
