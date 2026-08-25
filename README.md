@@ -17,7 +17,7 @@ Web application that predicts the resale price of a used car based on its **manu
 - **Containerization**: Docker + Docker Compose
 
 ## Project Structure
-
+```
 .
 ├── app/
 │   ├── main.py          # FastAPI app + /predict endpoint
@@ -32,19 +32,20 @@ Web application that predicts the resale price of a used car based on its **manu
 ├── docker-compose.yaml
 ├── pyproject.toml
 └── uv.lock
+```
 
 ## Running Locally (without Docker)
-
+```
 uv sync
 cd app
 uv run uvicorn main:app --reload
-
+```
 Then open http://localhost:8000
 
 ## Running with Docker
-
+```
 docker compose up --build
-
+```
 Then open http://localhost:8000
 
 ## Model Info
