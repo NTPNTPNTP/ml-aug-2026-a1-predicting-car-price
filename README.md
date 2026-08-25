@@ -63,4 +63,4 @@ This app is deployed on [Render](https://render.com) as a Docker-based web servi
 - Every push to the `main` branch triggers an automatic redeploy
 - Environment: **Region** = Singapore (Southeast Asia)
 
-**Live demo**: [https://your-app-name.onrender.com](https://ml-aug-2026-a1-predicting-car-price.onrender.com)
+**Live demo**: [https://ml-aug-2026-a1-predicting-car-price.onrender.com](https://ml-aug-2026-a1-predicting-car-price.onrender.com)
