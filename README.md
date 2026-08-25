@@ -35,17 +35,17 @@ Web application that predicts the resale price of a used car based on its **manu
 ```
 
 ## Running Locally (without Docker)
-
+```
 uv sync
 cd app
 uv run uvicorn main:app --reload
-
+```
 Then open http://localhost:8000
 
 ## Running with Docker
-
+```
 docker compose up --build
-
+```
 Then open http://localhost:8000
 
 ## Model Info
