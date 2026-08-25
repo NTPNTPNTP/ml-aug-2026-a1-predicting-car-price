@@ -54,3 +54,13 @@ Then open http://localhost:8000
 - **Target**: `selling_price` (log-transformed during training)
 - **Algorithm**: Random Forest Regressor (tuned via GridSearchCV)
 - **Test R²**: ~0.936–0.938
+
+## Deployment
+
+This app is deployed on [Render](https://render.com) as a Docker-based web service.
+
+- Render builds and runs the app directly from the `Dockerfile` at the repository root
+- Every push to the `main` branch triggers an automatic redeploy
+- Environment: **Region** = Singapore (Southeast Asia)
+
+**Live demo**: [https://your-app-name.onrender.com](https://ml-aug-2026-a1-predicting-car-price.onrender.com)
